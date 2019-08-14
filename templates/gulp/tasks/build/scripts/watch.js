@@ -6,6 +6,8 @@ let gulp = require('gulp'),
     gulp_sourcemaps = require('gulp-sourcemaps');
 let buffer = require('vinyl-buffer'),
     browserify = require('browserify'),
+    coffeeify = require('coffeeify'),
+    esmify = require('esmify'),
     extend = require('xtend'),
     source = require('vinyl-source-stream'),
     through = require('through2'),
@@ -14,7 +16,7 @@ let buffer = require('vinyl-buffer'),
 let watched = watchify(browserify({basedir: '.', entries: [
         'node_modules/@babel/polyfill/dist/polyfill.js', 'src/index.coffee'
     ], cache: {}, packageCache: {}, debug: true
-}).transform(require('coffeeify')));
+}).plugin(esmify).transform(coffeeify));
 
 function ensure(package, callback) {
     require('fs').access(

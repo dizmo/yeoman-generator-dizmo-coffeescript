@@ -6,6 +6,7 @@ let gulp = require('gulp'),
 let buffer = require('vinyl-buffer'),
     browserify = require('browserify'),
     coffeeify = require('coffeeify'),
+    esmify = require('esmify'),
     extend = require('xtend'),
     source = require('vinyl-source-stream'),
     through = require('through2');
@@ -99,7 +100,7 @@ gulp.task('scripts', function () {
     let browserified = browserify({
         basedir: '.', debug: !!argv.sourcemaps, entries: [
             'node_modules/@babel/polyfill/dist/polyfill.js', 'src/index.coffee']
-    }).transform(coffeeify);
+    }).plugin(esmify).transform(coffeeify);
 
     let stream = browserified.bundle()
         .pipe(source('index.js')).pipe(buffer());

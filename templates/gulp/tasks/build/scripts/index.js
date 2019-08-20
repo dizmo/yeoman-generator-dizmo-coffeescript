@@ -99,9 +99,7 @@ gulp.task('scripts', function () {
         basedir: '.', debug: !!argv.sourcemaps, entries: [
             'node_modules/@babel/polyfill/dist/polyfill.js', 'src/index.coffee'
         ]
-    }).transform('coffeeify').transform('babelify', {
-        extensions: ['.js', '.jsx']
-    });
+    }).transform('coffeeify').transform('babelify');
 
     let stream = browserified.bundle()
         .pipe(source('index.js')).pipe(buffer());

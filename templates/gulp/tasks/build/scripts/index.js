@@ -96,10 +96,15 @@ gulp.task('scripts', function () {
     }
 
     let browserified = browserify({
-        basedir: '.', debug: !!argv.sourcemaps, entries: [
-            'node_modules/@babel/polyfill/dist/polyfill.js', 'src/index.coffee'
+        basedir: '.',
+        debug: !!argv.sourcemaps,
+        entries: [
+            'node_modules/@babel/polyfill/dist/polyfill.js',
+            'src/index.coffee'
         ]
-    }).transform('coffeeify').transform('babelify');
+    })
+    .transform('coffeeify')
+    .transform('babelify');
 
     let stream = browserified.bundle()
         .pipe(source('index.js')).pipe(buffer());

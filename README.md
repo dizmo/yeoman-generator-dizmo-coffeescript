@@ -7,11 +7,11 @@ Sub-generator to create CoffeeScript based dizmo projects: This repository is me
 ## Package Installation
 
 ```sh
-(sudo) npm install -g yo
+npm install -g yo
 ```
 
 ```sh
-(sudo) npm install -g @dizmo/generator-dizmo
+npm install -g @dizmo/generator-dizmo
 ```
 
 ## Project Generation
@@ -29,10 +29,11 @@ yo @dizmo/dizmo --help
 ## Project Upgrade
 
 ```sh
-(sudo) npm upgrade -g @dizmo/generator-dizmo
+npm upgrade -g @dizmo/generator-dizmo
 ```
 
 Within an existing project:
+
 ```sh
 yo @dizmo/dizmo --upgrade
 ```

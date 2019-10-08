@@ -14,9 +14,8 @@ window.i18n (err, t) ->
     return
 
 window.document.addEventListener 'dizmoready', ->
-    document.getElementById('done').onclick = ->
-        dizmo.showFront()
-        return
+    done = document.getElementById 'done'
+    done.onclick = -> dizmo.showFront()
     return
 , {
     once: true

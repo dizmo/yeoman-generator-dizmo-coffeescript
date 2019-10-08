@@ -17,17 +17,27 @@ module.exports = class extends Generator {
             );
         }
         if (!upgrade || upgrade) {
-            const pkg = this.fs.readJSON(
-                this.destinationPath('package.json')
-            );
-            delete pkg.devDependencies['babel-loader'];
-            delete pkg.devDependencies['webpack'];
-            delete pkg.devDependencies['webpack-stream'];
-            delete pkg.optionalDependencies['webpack-obfuscator'];
-            delete pkg.optionalDependencies['terser-webpack-plugin'];
-            this.fs.writeJSON(
-                this.destinationPath('package.json'), pkg, null, 2
-            );
+            const tpl_path = this.templatePath('webpack.config.js');
+            const dst_path = this.destinationPath('webpack.config.js');
+            try {
+                const config = require(dst_path) || {};
+                const module = config.module || {};
+                const rules = module.rules || [];
+                if (!rules.find((r) =>
+                    typeof r.loader === 'object' &&
+                    r.loader.indexOf('coffee-loader') >= 0 ||
+                    typeof r.loader === 'string' &&
+                    r.loader.match(/coffee-loader/)
+                )) {
+                    this.fs.copyTpl(tpl_path, dst_path, {
+                        dizmoName: this.options.name
+                    });
+                }
+            } catch (ex) {
+                this.fs.copyTpl(tpl_path, dst_path, {
+                    dizmoName: this.options.name
+                });
+            }
         }
         if (!upgrade || upgrade) {
             const pkg = this.fs.readJSON(
@@ -35,30 +45,7 @@ module.exports = class extends Generator {
             );
             pkg.devDependencies = sort(
                 lodash.assign(pkg.devDependencies, {
-                    'babelify': '^10.0.0',
-                    'browserify': '^16.5.0',
-                    'gulp-uglify': '^3.0.2',
-                    'vinyl-buffer': '^1.0.1',
-                    'vinyl-source-stream': '^2.0.0',
-                    'watchify': '^3.11.1'
-                })
-            );
-            pkg.optionalDependencies = sort(
-                lodash.assign(pkg.optionalDependencies, {
-                    'javascript-obfuscator': '^0.18.1'
-                })
-            );
-            this.fs.writeJSON(
-                this.destinationPath('package.json'), pkg, null, 2
-            );
-        }
-        if (!upgrade || upgrade) {
-            const pkg = this.fs.readJSON(
-                this.destinationPath('package.json')
-            );
-            pkg.devDependencies = sort(
-                lodash.assign(pkg.devDependencies, {
-                    'coffeeify': '^3.0.1',
+                    'coffee-loader': "^0.9.0",
                     'coffeescript': '^2.4.1',
                     'gulp-coffeelint': '^0.6.0'
                 })
@@ -66,12 +53,6 @@ module.exports = class extends Generator {
             delete pkg.devDependencies['gulp-eslint'];
             this.fs.writeJSON(
                 this.destinationPath('package.json'), pkg, null, 2
-            );
-        }
-        if (!upgrade) {
-            this.fs.copy(
-                this.templatePath('babel.config.js'),
-                this.destinationPath('babel.config.js')
             );
         }
         if (!upgrade) {
@@ -92,9 +73,6 @@ module.exports = class extends Generator {
         );
         rimraf.sync(
             this.destinationPath('src/index.js')
-        );
-        rimraf.sync(
-            this.destinationPath('webpack.config.js')
         );
     }
 };

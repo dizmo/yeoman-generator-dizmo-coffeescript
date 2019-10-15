@@ -6,11 +6,12 @@ module.exports = {
     },
     module: {
         rules: [{
-            test: /\.coffee$/,
+            test: /\.coffee$/i,
+            exclude: [/node_modules/i],
             loader: 'coffee-loader'
         }, {
-            test: /\.js$/,
-            exclude: [/\.(min|umd)\.js$/],
+            test: /\.js$/i,
+            exclude: [/node_modules/i, /\.(min|umd)\.js$/i],
             use: {
                 loader: 'babel-loader',
                 options: {

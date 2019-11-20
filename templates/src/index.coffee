@@ -6,7 +6,7 @@ window.showFront = ->
     dizmo.showFront()
     return
 
-window.i18n (err, t) ->
+window.i18n (error, t) ->
     cell = document.getElementsByClassName('table-cell')[0]
     cell.textContent = t '#front/greeting'
     done = document.getElementById 'done'
